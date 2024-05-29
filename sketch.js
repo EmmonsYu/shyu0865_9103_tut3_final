@@ -18,6 +18,9 @@ let startFrame; // Frame number when easing starts
 let targetFrameRate; // Target frame rate when easing ends
 let initialFrameRate = 10; // Initial frame rate
 
+let horizontalYellowLines = 10; // Initial number of horizontal yellow lines
+let verticalYellowLines = 10; // Initial number of vertical yellow lines
+
 function setup() {
   createCanvas(windowWidth, windowHeight);
   calculateMondrian();
@@ -44,7 +47,13 @@ function draw() {
   // Calculate the current frame rate
   let currentFrameRate = initialFrameRate + (targetFrameRate - initialFrameRate) * t;
   frameRate(currentFrameRate); // Set the current frame rate
+
+  // Control the number of horizontal yellow lines based on the value of mouseY
+  horizontalYellowLines = floor(map(mouseY, 0, height, 5, 20));
+  // Control the number of vertical yellow lines based on the value of mouseY
+  verticalYellowLines = floor(map(mouseY, 0, height, 5, 20));
 }
+
 
 
 
@@ -209,7 +218,7 @@ function drawRectangle() {
         fill(smallColor);
         noStroke();
         rect(smallX + mondrian.xOffset, smallY + mondrian.yOffset, smallRectW, smallRectH);
-        //To generate a smaller rectangle in the middle of a larger rectangle
+         //To generate a smaller rectangle in the middle of a larger rectangle
         if(smallRectH>=rectSize&&smallRectW>=rectSize){
           let centerRectW = smallRectW / 2;
           let centerRectH = smallRectH / 2;
@@ -230,7 +239,7 @@ function drawRectangle() {
         fill(smallColor);
         noStroke();
         rect(smallX + mondrian.xOffset, smallY + mondrian.yOffset, smallRectW, smallRectH);
-        //To generate a smaller rectangle in the middle of a larger rectangle
+         //To generate a smaller rectangle in the middle of a larger rectangle
         if(smallRectH>=rectSize&&smallRectW>=rectSize){
           let centerRectW = smallRectW / 2;
           let centerRectH = smallRectH / 2;
@@ -281,14 +290,14 @@ function drawLine(){
   //Make two arrays to store the horizontal and vertical lines
   horizontalLines = [];
   verticalLines = [];
-//The starting point coordinates of Y, this is the position of the first horizontal line, and the subsequent vertical lines are arranged based on this.
+    //The starting point coordinates of Y, this is the position of the first horizontal line, and the subsequent vertical lines are arranged based on this.
     //let originY=floor(random(mondrian.height/rectSize)) * rectSize/2;
     //let originX=floor(random(mondrian.width/rectSize)) * rectSize;
 
     let firstY=floor(random(0,2))*rectSize;
     let firstX=floor(random(0,2))*rectSize;
   //Draw Horizontal lines
-  for (let i = 0; i < random(10,12); i ++){
+  for (let i = 0; i < horizontalYellowLines; i ++){
     //let y = floor(random(mondrian.height/rectSize)) * rectSize;
 
     let y=firstY+floor(random(i,i*2))*rectSize+rectSize;
@@ -309,7 +318,7 @@ function drawLine(){
 
     //Add random colored squares along the horizontal line to mimic 
     //Mondrian painting
-    for (let i = rectSize; i < mondrian.width; i += rectSize){
+    for (let i = 0; i < verticalYellowLines; i ++){
       if(random() > 0.5){ //Randomly decide to place a colored square
         let randomColor = random([color(238,216,34), //yellow
                                   color(173,57,42), //red
@@ -323,7 +332,7 @@ function drawLine(){
   }
 
   //Draw Vertical lines
-  for (let i = 0; i < random(10,12); i ++){
+  for (let i = 0; i < verticalYellowLines; i++){
     let x = firstX+floor(random(i,i*2))*rectSize+rectSize;
     if(x>mondrian.width){
       x=mondrian.width
