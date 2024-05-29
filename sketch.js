@@ -297,7 +297,7 @@ function drawLine(){
   for (let i = 0; i < horizontalYellowLines; i ++){
     //let y = floor(random(mondrian.height/rectSize)) * rectSize;
 
-    let y=firstY+floor(random(i,i*4))*rectSize+rectSize;
+    let y=firstY+floor(random(i,i*3))*rectSize+rectSize;
 
     //Limit the maximum value
     if(y>mondrian.height){
@@ -316,7 +316,7 @@ function drawLine(){
     //Add random colored squares along the horizontal line to mimic 
     //Mondrian painting
     for (let i = 0; i < verticalYellowLines; i ++){
-      if(random() > 0.5){ //Randomly decide to place a colored square
+      if(random() > 5){ //Randomly decide to place a colored square
         let randomColor = random([color(238,216,34), //yellow
                                   color(173,57,42), //red
                                   color(67,103,187), //blue
@@ -330,7 +330,7 @@ function drawLine(){
 
    //Draw Vertical lines
    for (let i = 0; i < verticalYellowLines; i++){
-    let x = firstX + floor(random(i,i*4)) * rectSize + rectSize;
+    let x = firstX + floor(random(i,i*5)) * rectSize + rectSize;
     if (x < mondrian.width) { // Add boundary check
         let w = rectSize/2;
 
