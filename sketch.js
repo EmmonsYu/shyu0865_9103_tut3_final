@@ -13,7 +13,7 @@ let canvasAspectRatio = 0;
 let horizontalLines = [];
 let verticalLines = [];
 
-let easingTime = 40; // Duration of the easing effect
+let easingTime = 80; // Duration of the easing effect
 let startFrame; // Frame number when easing starts
 let targetFrameRate; // Target frame rate when easing ends
 let initialFrameRate = 10; // Initial frame rate
@@ -50,9 +50,9 @@ function draw() {
   frameRate(currentFrameRate); // Set the current frame rate
 
   // Control the number of horizontal yellow lines based on the value of mouseY
-  horizontalYellowLines = floor(map(mouseY, 0, height, 5, 20));
+  horizontalYellowLines = floor(map(mouseY, 0, height, 4, 10));
   // Control the number of vertical yellow lines based on the value of mouseY
-  verticalYellowLines = floor(map(mouseY, 0, height, 5, 20));
+  verticalYellowLines = floor(map(mouseY, 0, height, 4, 10));
 }
 
 
@@ -287,17 +287,17 @@ function drawLine(){
   //Make two arrays to store the horizontal and vertical lines
   horizontalLines = [];
   verticalLines = [];
-    //The starting point coordinates of Y, this is the position of the first horizontal line, and the subsequent vertical lines are arranged based on this.
-    //let originY=floor(random(mondrian.height/rectSize)) * rectSize/2;
-    //let originX=floor(random(mondrian.width/rectSize)) * rectSize;
 
     let firstY=floor(random(0,2))*rectSize;
-    let firstX=floor(random(0,2))*rectSize;
-  //Draw Horizontal lines
-  for (let i = 0; i < horizontalYellowLines; i ++){
-    //let y = floor(random(mondrian.height/rectSize)) * rectSize;
+  let firstY = floor(random(0,2)) * rectSize;
+  let firstX = floor(random(0,2)) * rectSize;
 
-    let y=firstY+floor(random(i,i*3))*rectSize+rectSize;
+  // Draw Horizontal lines
+  for (let i = 0; i < horizontalYellowLines; i++) {
+    // Divide the canvas into equal parts based on horizontalYellowLines,
+    // and randomly generate yellow lines within each section
+    let regionHeight = (mondrian.height - firstY) / horizontalYellowLines;
+    let y = firstY + i * regionHeight + floor(random(regionHeight / rectSize)) * rectSize;
 
     //Limit the maximum value
     if(y>mondrian.height){
@@ -308,7 +308,7 @@ function drawLine(){
     fill(238,216,34);
     noStroke();
     rect(mondrian.xOffset, y + mondrian.yOffset, mondrian.width, h);
-    
+
     //store the y and h values in the array, so the cross points can be 
     //drawn later
     horizontalLines.push({y: y, h: h, x: 0, w: mondrian.width});
@@ -323,56 +323,59 @@ function drawLine(){
                                   color(200, 200, 200)]); //grey
         fill(randomColor);
         noStroke();
-        square(i + mondrian.xOffset, y + mondrian.yOffset, rectSize/2);
+        square(j * rectSize + mondrian.xOffset, y + mondrian.yOffset, rectSize/2);
       }
     }
   }
 
-   //Draw Vertical lines
-   for (let i = 0; i < verticalYellowLines; i++){
-    let x = firstX + floor(random(i,i*5)) * rectSize + rectSize;
+  // Draw Vertical lines
+  for (let i = 0; i < verticalYellowLines; i++) {
+    // Divide the canvas into equal parts based on verticalYellowLines,
+    // and randomly generate yellow lines within each section
+    let regionWidth = (mondrian.width - firstX) / verticalYellowLines;
+    let x = firstX + i * regionWidth + floor(random(regionWidth / rectSize)) * rectSize;
+
     if (x < mondrian.width) { // Add boundary check
-        let w = rectSize/2;
+      let w = rectSize/2;
 
-        fill(238,216,34);
-        noStroke();
-        rect(x + mondrian.xOffset, mondrian.yOffset, w, mondrian.height);
+      fill(238, 216, 34);
+      noStroke();
+      rect(x + mondrian.xOffset, mondrian.yOffset, w, mondrian.height);
 
-        //store the x and w values in the array
-        verticalLines.push({x: x, w: w, y: 0, h: mondrian.height});
+      // Store the x and w values in the array
+      verticalLines.push({ x: x, w: w, y: 0, h: mondrian.height });
 
-        //Add random colored squares along the vertical line
-        for (let i = rectSize; i < mondrian.height; i += rectSize){
-            if(random() > 0.5){
-                let randomColor = random([color(238,216,34), //yellow
-                                          color(173,57,42), //red
-                                          color(67,103,187), //blue
-                                          color(200, 200, 200)]); //grey
-                fill(randomColor);
-                noStroke();
-                square(x + mondrian.xOffset, i + mondrian.yOffset, rectSize/2);
-            }
+      // Add random colored squares along the vertical line
+      for (let j = rectSize; j < mondrian.height; j += rectSize) {
+        if (random() > 0.5) {
+          let randomColor = random([color(238, 216, 34), // yellow
+                                    color(173, 57, 42), // red
+                                    color(67, 103, 187), // blue
+                                    color(200, 200, 200)]); // grey
+          fill(randomColor);
+          noStroke();
+          square(x + mondrian.xOffset, j + mondrian.yOffset, rectSize/2);
         }
+      }
     }
   }
 
-  //Draw cross points with new color, the cross points are the 
-  //intersection of the horizontal and vertical lines
-  for (let horizontal of horizontalLines){ 
-    for (let vertical of verticalLines){
-      //
-      if(vertical.x < mondrian.width && horizontal.y < mondrian.height){ 
-        let randomColor = random([color(173,57,42),   //red
-                                  color(67,103,187),    //blue
-                                  color(200, 200, 200)]);  //grey
-      
+  // Draw cross points with new color, the cross points are the intersection of the horizontal and vertical lines
+  for (let horizontal of horizontalLines) {
+    for (let vertical of verticalLines) {
+      if (vertical.x < mondrian.width && horizontal.y < mondrian.height) {
+        let randomColor = random([color(173, 57, 42),   // red
+                                  color(67, 103, 187),    // blue
+                                  color(200, 200, 200)]);  // grey
+
         fill(randomColor);
-        square(vertical.x + mondrian.xOffset, 
+        square(vertical.x + mondrian.xOffset,
                horizontal.y + mondrian.yOffset, rectSize/2);
       }
     }
   }
 }
+
 
 
 function windowResized(){
